@@ -34,3 +34,11 @@ python manage.py runserver
 ```
 
 ### Overview
+
+This is a simple e-travel website made for our Advanced Programming course, taught by Professor Anirban Mondal, in our 3rd semester at Ashoka. The backend for the website was developed by Adit and Paritosh, and the frontend by Adit, Paritosh, and Shriman.
+
+This time we incorporated our learnings from the last project and divided backend and frontend clearly amongst ouselves. This helped streamline our workflow and didn't result in many bottlenecks.
+
+Paritosh finally compiled all the code together and linked the backend to the frontend.
+
+<Adit add how you scraped data>
