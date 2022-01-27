@@ -28,10 +28,10 @@
                                 </span>
                                 <span class="text-black-50">{% if user.email %}{{user.email}}{% else %}Add your
                                         email{% endif %}</span><span>
-                                </span><span class="mt-5"><a href="/history"
+                                </span><span class="mt-5"><a href="/bookings"
                                                 class="btn btn-dark text-decoration-none">View
                                                 your past
-                                                orders</a></span>
+                                                bookings</a></span>
                         </div>
                 </div>
                 <div class="col-md-5 border-right">
@@ -136,4 +136,6 @@
         </div>
 </div>
 </div>
+{% include "partials/footer.html" %}
+
 {% endblock content %}

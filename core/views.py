@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 
 from .forms import RatingForm, searchForm, BookingForm, ProfileForm, PasswordForm
 from .models import Hotel, Review, Booking, Profile
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 
@@ -38,6 +38,14 @@ def homeView(request):
     return render(request, "home.html", context)
 
 
+def bookingsView(request):
+    bookings = Booking.objects.filter(user=request.user)
+    context = {
+        "bookings": bookings,
+    }
+    return render(request, "bookings.html", context)
+
+
 def details_view(request, my_id):
     if request.method == "POST":
         form = RatingForm(request.POST or None)
@@ -54,7 +62,7 @@ def details_view(request, my_id):
             book = Booking(
                 start=start, end=end, guests=guests, payment=payment, total=total, hotel=hotel, user=user)
             book.save()
-            return redirect(f"/hotels/{my_id}")
+            return redirect("home")
 
         if form.is_valid():
             body = {
