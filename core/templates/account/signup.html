@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load widget_tweaks i18n static %}
+
+{% block head %}
+<title>Travel | Sign Up</title>
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static "css/login.css" %}">
+{% endblock head %}
+
+{% block content %}
+{% comment %} <div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card">
+                <form class="box" method="POST" action="{% url "account_signup" %}">
+                    {% csrf_token %}
+                    <p class="text-muted">
+                        Already have an account or want to sign in using Google? Then please
+                        <a class="forgot text-muted" href="{{ login_url }}">click here</a>!
+                    </p>
+                    {% if form.errors %}
+                    {% for field in form %}
+
+                    {% if field.errors %}
+                    {{ field|add_class:"error" }}
+                    {% else %}
+                    {{ field }}
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                    <small class="text-danger form-text error-{{field.name}}">
+                        {{ error}}
+                    </small>
+                    {% endfor %}
+                    {% endfor %}
+
+                    {% else %}
+                    {% for field in form %}
+                    {{ field }}
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
+
+                    <input type="submit" name="" value="Sign Up">
+                </form>
+            </div>
+        </div>
+    </div>
+</div> {% endcomment %}
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <div class="mb-md-5 mt-md-4 pb-5">
+
+                            <h2 class="fw-bold mb-2 text-uppercase">Sign Up</h2>
+                            <p class="text-white-50 mb-5"> Already have an account or want to sign in using Google? Then
+                                please
+                                <a class="text-white-50 fw-bold" href="{{ login_url }}">click here</a>!</p>
+
+                            <form method="POST" action="{% url "account_signup" %}">
+                                {% csrf_token %}
+                                {% if form.errors %}
+                                {% for field in form %}
+                                {% if field.errors %}
+                                <div class="form-outline form-white mb-2">
+                                    {{ field|add_class:"error form-control form-control-lg" }}
+                                </div>
+                                {% else %}
+                                <div class="form-outline form-white mb-4">
+                                    {{ field|add_class:"form-control form-control-lg" }}
+                                </div>
+                                {% endif %}
+
+                                {% for error in field.errors %}
+                                <p class="text-danger form-text error-{{field.name}}">
+                                    {{ error}}
+                                </p>
+                                {% endfor %}
+                                {% endfor %}
+
+                                {% else %}
+                                {% for field in form %}
+                                <div class="form-outline form-white mb-4">
+                                    {{ field|add_class:"form-control form-control-lg" }}
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+
+                                {% if redirect_field_value %}
+                                <input type="hidden" name="{{ redirect_field_name }}"
+                                    value="{{ redirect_field_value }}" />
+                                {% endif %}
+
+                                <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block extra_scripts %}
+<script src="{% static "js/error.js" %}"></script>
+{% endblock extra_scripts %}

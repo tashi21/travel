@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Travel | {{ object.name }} </title>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>Page Title</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <script src="https://kit.fontawesome.com/12ef10a30c.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" rel="stylesheet">
+        <style>
+            ul {
+                list-style-type: none;
+            }
+
+            img {
+                height: 100%;
+                width: auto;
+            }
+
+            .carousel-inner,
+            #carouselExampleControls {
+                height: 400px;
+                width: 100%;
+            }
+
+            .main-body {
+                padding: 10%;
+            }
+
+            h1,
+            h4 {
+                font-family: 'Poppins';
+            }
+
+            span {
+                font-size: 30px;
+                font-weight: 800;
+                color: #4e66f8;
+            }
+        </style>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
+        <script type="text/javascript">
+            function price(guests) {
+                document.getElementById("id_total").value = guests * "{{object.price}}";
+            }
+        </script>
+
+    </head>
+
+    <body class="text-white bg-dark">
+        {% include "partials/navbar.html" %}
+        <div class="container main-body">
+            <div class="row">
+                <div class="col">
+                    <!-- The name of the Hotels and then the address below-->
+                    <h1>{{ object.name }} </h1>
+                    <h6 class="text-muted">{{ object.address }}</h6>
+                    <!-- Here we will put the average rating of the hotel-->
+                    <h5>
+                        {% if object.average_rating %}
+
+                        {% with ''|center:object.average_rating as range %}
+                        {% for _ in range %}
+                        <i class="fa fa-xs fa-star text-primary"></i>
+                        {% endfor %}
+                        {% endwith %}
+                        {% endif %}
+                        </h4>
+                        <p>
+                            <!-- connect the google maps api -->
+                            <ul>
+                                {% for facility, fac_string in facilities %}
+                                {% if facility %}
+                                <li class="list-inline-item">
+                                    <h5><i class="fas fa-check-circle"></i> {{fac_string}}</h5>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            <!-- carousel starts-->
+                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+
+                                    {% for url in urls %}
+                                    {% if forloop.first %}
+                                    <div class="carousel-item active">
+                                        <img src="{{url}}" class="d-block w-100" />
+                                    </div>
+                                    {% else %}
+                                    <div class="carousel-item">
+                                        <img src="{{url}}" class="d-block w-100" alt="Camera" height="300px"
+                                            width="auto" />
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <!-- start of the buttons-->
+                                <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <!--end of carousel-->
+                            {% load crispy_forms_tags %}
+
+
+                            <!-- LIST OF REVIEWS-->
+                            <!-- beginning of list of reviews-->
+                            <h1> Reviews</h1>
+                            <ul>
+
+                                {% for review in reviews %}
+                                <li>
+                                    <h4>
+                                        {% with ''|center:object.average_rating as range %}
+                                        {% for _ in range %}
+                                        <i class="fa fa-xs fa-star text-primary"></i>
+                                        {% endfor %}
+                                        {% endwith %}
+                                    </h4>
+                                    {{review.review }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+
+                            <!-- leave a review -->
+                            <div class="py-5">
+                                {% if user.is_authenticated %}
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#leaveReview" aria-expanded="false"
+                                    aria-controls="leaveReview">Leave a review</button>
+                                {% else %}
+                                <a class="btn btn-outline-warning" href="{% url "account_login" %}">Sign In to leave a
+                                    review</a>
+                                {% endif %}
+                                <div class="mt-4 collapse hide" id="leaveReview" style="">
+                                    <h5 class="mb-4">Leave a review</h5>
+                                    <form class="form" id="contact-form" method="post"
+                                        action="/hotels/{{ object.id }}/">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="mb-4">
+                                                    {{ form.name|as_crispy_field }}
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="mb-4">
+                                                    {{ form.rating|as_crispy_field }}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            {{ form.review|as_crispy_field }}
+                                            <!--<label class="form-label" for="review">Review</label>
+									<textarea class="form-control" rows="4" name="review" id="review" placeholder="Enter your review"></textarea>-->
+                                        </div>
+                                        <button class="btn btn-primary" type="submit">Post review</button>
+                                    </form>
+
+                                </div>
+
+
+                            </div>
+                            <!-- end of leave review -->
+
+                            <h1>Recommendations </h1>
+                            <br>
+                            <div id="recommendations">
+                                <div class="row row-eq-height">
+                                    {% for recommendation in recommendations %}
+                                    {% if recommendation.name == object.name %}
+                                    <div class="col-md-6" hidden>
+                                        {% else %}
+                                        <div class="col-md-6">
+                                            {% endif %}
+
+                                            <div
+                                                class="g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                                <div class="p-4 d-flex flex-column position-static">
+                                                    <strong
+                                                        class="d-inline-block mb-2 text-primary">Recommended</strong>
+                                                    <h3 class="mb-0">{{recommendation.name}}</h3>
+                                                    <div class="mb-1 text-muted">&#8377 {{recommendation.price}}</div>
+                                                    <a href="{{recommendation.get_absolute_url}}"
+                                                        class="stretched-link"></a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end of col-->
+                            <!--second col-->
+                            <div class="col">
+                                <!-- the booking information here -->
+                                <div class="bg-light p-4 shadow ms-lg-4 rounded sticky-top leaflet-drag-target"
+                                    style="top: 100px;">
+                                    <p class="text-muted"><span>&#8377 {{object.price}}</span> per night</p>
+                                    <hr class="my-4">
+                                    {% if user.is_authenticated %}
+                                    <form id="booking-form" method="POST" autocomplete="off" class="form">
+                                        {% csrf_token %}
+
+                                        <div>
+                                            <div id="div_id_start" class="form-group">
+                                                <label for="id_start_month" class=" requiredField text-muted">
+                                                    Start Date
+                                                </label>
+                                                <div>
+                                                    <select name="start_month" required="" id="id_start_month"
+                                                        class="selectdatewidget form-control">
+                                                        <option value="1">January</option>
+                                                        <option value="2">February</option>
+                                                        <option value="3">March</option>
+                                                        <option value="4">April</option>
+                                                        <option value="5">May</option>
+                                                        <option value="6">June</option>
+                                                        <option value="7">July</option>
+                                                        <option value="8">August</option>
+                                                        <option value="9">September</option>
+                                                        <option value="10">October</option>
+                                                        <option value="11">November</option>
+                                                        <option value="12">December</option>
+                                                    </select><select name="start_day" required="" id="id_start_day"
+                                                        class="selectdatewidget form-control">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                        <option value="13">13</option>
+                                                        <option value="14">14</option>
+                                                        <option value="15">15</option>
+                                                        <option value="16">16</option>
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21">21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23">23</option>
+                                                        <option value="24">24</option>
+                                                        <option value="25">25</option>
+                                                        <option value="26">26</option>
+                                                        <option value="27">27</option>
+                                                        <option value="28">28</option>
+                                                        <option value="29">29</option>
+                                                        <option value="30">30</option>
+                                                        <option value="31">31</option>
+                                                    </select><select name="start_year" required="" id="id_start_year"
+                                                        class="selectdatewidget form-control">
+                                                        <option value="2022">2022</option>
+                                                        <option value="2023">2023</option>
+                                                        <option value="2024">2024</option>
+                                                        <option value="2025">2025</option>
+                                                        <option value="2026">2026</option>
+                                                        <option value="2027">2027</option>
+                                                        <option value="2028">2028</option>
+                                                        <option value="2029">2029</option>
+                                                        <option value="2030">2030</option>
+                                                        <option value="2031">2031</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div id="div_id_end" class="form-group">
+                                                <label for="id_end_month" class=" requiredField text-muted">
+                                                    End Date
+                                                </label>
+                                                <div>
+                                                    <select name="end_month" required="" id="id_end_month"
+                                                        class="selectdatewidget form-control">
+                                                        <option value="1">January</option>
+                                                        <option value="2">February</option>
+                                                        <option value="3">March</option>
+                                                        <option value="4">April</option>
+                                                        <option value="5">May</option>
+                                                        <option value="6">June</option>
+                                                        <option value="7">July</option>
+                                                        <option value="8">August</option>
+                                                        <option value="9">September</option>
+                                                        <option value="10">October</option>
+                                                        <option value="11">November</option>
+                                                        <option value="12">December</option>
+                                                    </select><select name="end_day" required="" id="id_end_day"
+                                                        class="selectdatewidget form-control">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                        <option value="13">13</option>
+                                                        <option value="14">14</option>
+                                                        <option value="15">15</option>
+                                                        <option value="16">16</option>
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21">21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23">23</option>
+                                                        <option value="24">24</option>
+                                                        <option value="25">25</option>
+                                                        <option value="26">26</option>
+                                                        <option value="27">27</option>
+                                                        <option value="28">28</option>
+                                                        <option value="29">29</option>
+                                                        <option value="30">30</option>
+                                                        <option value="31">31</option>
+                                                    </select><select name="end_year" required="" id="id_end_year"
+                                                        class="selectdatewidget form-control">
+                                                        <option value="2022">2022</option>
+                                                        <option value="2023">2023</option>
+                                                        <option value="2024">2024</option>
+                                                        <option value="2025">2025</option>
+                                                        <option value="2026">2026</option>
+                                                        <option value="2027">2027</option>
+                                                        <option value="2028">2028</option>
+                                                        <option value="2029">2029</option>
+                                                        <option value="2030">2030</option>
+                                                        <option value="2031">2031</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div id="div_id_guests" class="form-group">
+                                                <label for="id_guests" class=" requiredField text-muted">
+                                                    No. of Guests
+                                                </label>
+                                                <div>
+                                                    <select name="guests" class="select form-control" id="id_guests"
+                                                        onchange="price(this.value)">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div id="div_id_payment" class="form-group">
+                                                <label class=" requiredField text-muted">
+                                                    Payment Method
+                                                </label>
+                                                <div>
+                                                    <div class="form-check">
+                                                        <input type="radio" class="form-check-input" name="payment"
+                                                            value="C" id="id_payment_0" required="">
+                                                        <label class="form-check-label text-dark" for="id_payment_0">
+                                                            Credit Card
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio" class="form-check-input" name="payment"
+                                                            value="D" id="id_payment_1" required="">
+                                                        <label class="form-check-label text-dark" for="id_payment_1">
+                                                            Debit Card
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio" class="form-check-input" name="payment"
+                                                            value="U" id="id_payment_2" required="">
+                                                        <label class="form-check-label text-dark" for="id_payment_2">
+                                                            UPI
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio" class="form-check-input" name="payment"
+                                                            value="COD" id="id_payment_3" required="">
+                                                        <label class="form-check-label text-dark" for="id_payment_3">
+                                                            Cash On Delivery
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="div_id_total" class="form-group">
+                                                <label for="id_total" class=" requiredField text-muted">
+                                                    Total (in Rs.)
+                                                </label>
+                                                <div>
+                                                    <input type="number" name="total" min="1"
+                                                        class="numberinput form-control" required="" id="id_total"
+                                                        value="{{object.price}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-grid mb-4"><button type="submit" class="btn btn-primary">Book
+                                                    your
+                                                    stay</button></div>
+                                    </form>
+                                    {% else %}
+                                    <a class="btn btn-outline-success" href="{% url "account_login" %}">Sign In to book
+                                        a room</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                </div>
+                <!--end of row-->
+            </div>
+            <!--end of container-->
+        </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+        {% include "partials/footer.html" %}
+
+    </body>
+
+</html>

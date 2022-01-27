@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Travel | Home</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home</title>
+        <style>
+            a:link,
+            a:visited,
+            a:hover,
+            a:active {
+                text-decoration: none;
+                color: #4e66f8;
+            }
+
+            .card {
+                max-height: 300px;
+            }
+
+            .card-img-top {
+                height: 300px;
+            }
+
+            .main {
+                background: #6a11cb;
+                background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+                background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+                height: 100vh;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center
+            }
+
+            .search {
+                background-color: #fff;
+                padding: 4px;
+                border-radius: 5px
+            }
+
+            .search-1 {
+                position: relative;
+                width: 100%
+            }
+
+            .search-1 input {
+                height: 45px;
+                border: none;
+                width: 100%;
+                padding-left: 34px;
+                padding-right: 10px;
+            }
+
+            .search-1 input:focus {
+                border-color: none;
+                box-shadow: none;
+                outline: none
+            }
+
+            .search-1 i {
+                position: absolute;
+                top: 12px;
+                left: 5px;
+                font-size: 24px;
+                color: #eee
+            }
+
+            ::placeholder {
+                color: grey;
+                opacity: 1
+            }
+
+            .search-2 {
+                position: relative;
+                width: 100%
+            }
+
+            .search-2 input {
+                height: 45px;
+                border: none;
+                width: 100%;
+                padding-left: 18px;
+                padding-right: 100px
+            }
+
+            .search-2 input:focus {
+                border-color: none;
+                box-shadow: none;
+                outline: none
+            }
+
+            .search-2 i {
+                position: absolute;
+                top: 12px;
+                left: -10px;
+                font-size: 24px;
+                color: #eee
+            }
+
+            .search-2 button {
+                right: 1px;
+                top: 0px;
+                border: none;
+                height: 45px;
+                background-color: red;
+                color: #fff;
+                width: 100%;
+                border-radius: 4px
+            }
+
+            @media (max-width:800px) {
+                .search-1 input {
+                    border-right: none;
+                    border-bottom: 1px solid #eee
+                }
+
+                .search-2 i {
+                    left: 4px
+                }
+
+                .search-2 input {
+                    padding-left: 34px
+                }
+
+                .search-2 button {
+                    height: 37px;
+                    top: 5px
+                }
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <script>
+            $(function () {
+                var availableTags = ["Kensington and Chelsea", "Westminster Borough", "Central London",
+                    "Camden", "West End", "Kensington", "Hyde Park", "Tower Hamlets", "Wimbledon",
+                    "Wandsworth", "Newham", "Lewisham", "Clerkenwell", "Stratford", "City of London",
+                    "Shoreditch", "Canary Wharf and Docklands", "Regent's Park", "Spitalfields",
+                    "Hammersmith and Fulham", "South Kensington", "Paddington", "Oxford Street", "Wembley"
+                ];
+                $("#form-autocomplete").autocomplete({
+                    source: availableTags
+                });
+            });
+        </script>
+
+        <script src="https://kit.fontawesome.com/12ef10a30c.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
+    </head>
+
+    <body>
+        {% include "partials/navbar.html" %}
+        <div class="main position-relative overflow-hidden p-3 p-md-5">
+            <div class="col-md-8 p-lg-5 mx-auto my-5">
+                <h1 class="display-4 text-light fw-normal">Welcome</h1>
+                <p class="lead text-light fw-normal">Plan your Dream Holiday</p>
+                <!--start of search-->
+                <div class="search">
+                    <form action="{% url 'core:search' %}">
+                        <div class="row">
+                            <div class="col-md-9 search-1"><input name="neighbourhood" type="text"
+                                    id="form-autocomplete" placeholder="Location"> </div>
+                            <div class="col-md-3 search-2"> <button>Search</button> </div>
+                        </div>
+                    </form>
+
+                </div>
+                <!--end of search-->
+            </div>
+
+            <div class="product-device shadow-sm d-none d-md-block"></div>
+            <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+        </div>
+
+        {% comment %} <div class="container">
+            <h1>Places</h1>
+            <div class="row">
+
+                <div class="col-3">
+                    <a class="card-link" href="https://www.google.com">
+                        <div class="card">
+                            <img class="card-img-top"
+                                src="https://directory-v2.vercel.app/_next/image?url=%2Fcontent%2Fimg%2Fphoto%2Fnew-york.jpg&w=640&q=75"
+                                alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- end of barcelona-->
+                <div class="col-3">
+                    <a class="card-link" href="https://www.google.com">
+                        <div class="card">
+                            <img class="card-img-top"
+                                src="https://directory-v2.vercel.app/_next/image?url=%2Fcontent%2Fimg%2Fphoto%2Fnew-york.jpg&w=640&q=75"
+                                alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- end of barcelona-->
+                <div class="col-3">
+                    <a class="card-link" href="https://www.google.com">
+                        <div class="card">
+                            <img class="card-img-top"
+                                src="https://directory-v2.vercel.app/_next/image?url=%2Fcontent%2Fimg%2Fphoto%2Fnew-york.jpg&w=640&q=75"
+                                alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- end of barcelona-->
+                <div class="col-3">
+                    <a class="card-link" href="https://www.google.com">
+                        <div class="card">
+                            <img class="card-img-top"
+                                src="https://directory-v2.vercel.app/_next/image?url=%2Fcontent%2Fimg%2Fphoto%2Fnew-york.jpg&w=640&q=75"
+                                alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- end of barcelona-->
+
+            </div>
+        </div> {% endcomment %}
+        {% include "partials/footer.html" %}
+
+    </body>
+
+</html>

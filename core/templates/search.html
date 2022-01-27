@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Travel | Search</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            img {
+                max-height: 100%;
+                border: none;
+            }
+
+            .main-body {
+                padding: 7%;
+            }
+
+            h1,
+            h4 {
+                font-family: 'Poppins';
+            }
+
+            span {
+                font-size: 30px;
+                font-weight: 800;
+                color: #4e66f8;
+            }
+
+            .hotel {
+                padding-top: 2%;
+                padding-bottom: 2%;
+                padding-left: 5%;
+            }
+
+            .hotel .col-8 {
+                padding-bottom: 10px;
+                padding-top: 10px;
+            }
+
+            a:link,
+            a:visited,
+            a:hover,
+            a:active {
+                text-decoration: none;
+                color: #4e66f8;
+            }
+        </style>
+        <script src="https://kit.fontawesome.com/12ef10a30c.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
+    </head>
+
+    <body>
+        {% include "partials/navbar.html" %}
+
+        <div class="container main-body">
+            {% load crispy_forms_tags %}
+            <div class="row">
+                <div class="col-md-3">
+                    <form action="/hotels/" method="get">
+                        {{ form.rating|as_crispy_field }}
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-6">{{ form.price_upper|as_crispy_field }}</div>
+                            <div class="col-sm-6">{{ form.price_lower|as_crispy_field }}</div>
+                        </div>
+                        <br>
+                        {{ form.smoking_rooms|as_crispy_field }}
+                        {{ form.spa|as_crispy_field }}
+                        {{ form.pool|as_crispy_field }}
+                        {{ form.gym|as_crispy_field }}
+                        {{ form.breakfast|as_crispy_field }}
+                        {{ form.free_wifi|as_crispy_field }}
+                        {{ form.room_service|as_crispy_field }}
+                        {{ form.dry_cleaning|as_crispy_field }}
+                        <br>
+                        {{ form.neighbourhood|as_crispy_field }}
+                        <!--<input list="browsers" name="browser">
+                    <datalist id="browsers">
+                        <option value="Internet Explorer">
+                        <option value="Firefox">
+                    </datalist>-->
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+
+
+                <div class="col-md-9">
+                    {% if hotels %}
+                    {% for hotel in hotels%}
+                    <div class="row hotel">
+                        <div class="col-4">
+                            <img src="{{ hotel.photo_set.all.0.url }}" class="border-0 img-thumbnail" alt="">
+                        </div>
+                        <div class="col-8">
+                            <h1><a href="{{ hotel.get_absolute_url }}"> {{ hotel.name }}</a></h1>
+                            <h5 class="text-muted">{{ hotel.address }}</h5>
+                            <p> &#8377 {{ hotel.price }} per night</p>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h1>No results</h1>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% include "partials/footer.html" %}
+
+    </body>
+
+</html>
