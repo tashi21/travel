@@ -62,7 +62,7 @@ def details_view(request, my_id):
             book = Booking(
                 start=start, end=end, guests=guests, payment=payment, total=total, hotel=hotel, user=user)
             book.save()
-            return redirect("home")
+            return redirect("bookings")
 
         if form.is_valid():
             body = {
