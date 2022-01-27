@@ -26,8 +26,8 @@ pip install --user pipenv
 Here is how you can set up the entire project on your system from the command line:
 
 ``` terminal
-git clone https://github.com/Tashi21/Movieflix.git
-cd movieflix
+git clone https://github.com/Tashi21/travel.git
+cd travel
 pipenv install
 pipenv shell
 python manage.py runserver
